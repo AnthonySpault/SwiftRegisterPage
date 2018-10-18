@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +38,7 @@ class ViewController: UIViewController {
         validateButton.setTitleColor(UIColor.white, for: .normal)
         validateButton.backgroundColor = UIColor.purple
         validateButton.layer.cornerRadius = 7
+//        validateButton.addTarget(self, action: "submitForm", for: .touchUpInside)
         
         
         // PASSWORD CONFIRM
@@ -48,8 +49,11 @@ class ViewController: UIViewController {
         passwordConfirm.backgroundColor = UIColor.white
         passwordConfirm.layer.cornerRadius = 7
         passwordConfirm.alpha = 0.9
-        passwordConfirm.keyboardAppearance = UIKeyboardAppearance.dark;
+        passwordConfirm.keyboardAppearance = UIKeyboardAppearance.dark
+        passwordConfirm.returnKeyType = UIReturnKeyType.join
         passwordConfirm.isSecureTextEntry = true
+        passwordConfirm.tag = 5
+        passwordConfirm.delegate = self
         
         
         // PASSWORD
@@ -60,8 +64,11 @@ class ViewController: UIViewController {
         password.backgroundColor = UIColor.white
         password.layer.cornerRadius = 7
         password.alpha = 0.9
-        password.keyboardAppearance = UIKeyboardAppearance.dark;
+        password.keyboardAppearance = UIKeyboardAppearance.dark
+        password.returnKeyType = UIReturnKeyType.next
         password.isSecureTextEntry = true
+        password.tag = 4
+        password.delegate = self
         
         
         // EMAIL
@@ -74,6 +81,9 @@ class ViewController: UIViewController {
         email.alpha = 0.9
         email.keyboardAppearance = UIKeyboardAppearance.dark;
         email.keyboardType = UIKeyboardType.emailAddress
+        email.returnKeyType = UIReturnKeyType.continue
+        email.tag = 3
+        email.delegate = self
         
         
         // LASTNAME
@@ -84,7 +94,10 @@ class ViewController: UIViewController {
         lastname.backgroundColor = UIColor.white
         lastname.layer.cornerRadius = 7
         lastname.alpha = 0.9
-        lastname.keyboardAppearance = UIKeyboardAppearance.dark;
+        lastname.keyboardAppearance = UIKeyboardAppearance.dark
+        lastname.returnKeyType = UIReturnKeyType.continue
+        lastname.tag = 2
+        lastname.delegate = self
         
         
         // FIRSTNAME
@@ -95,7 +108,10 @@ class ViewController: UIViewController {
         firstname.backgroundColor = UIColor.white
         firstname.layer.cornerRadius = 7
         firstname.alpha = 0.9
-        firstname.keyboardAppearance = UIKeyboardAppearance.dark;
+        firstname.keyboardAppearance = UIKeyboardAppearance.dark
+        firstname.returnKeyType = UIReturnKeyType.continue
+        firstname.tag = 1
+        firstname.delegate = self
         
         
         // LOGO
@@ -116,7 +132,27 @@ class ViewController: UIViewController {
         self.view.addSubview(firstname)
         self.view.addSubview(logoView)
     }
-
-
+    
+    func submitForm() {
+        for view in self.view.subviews {
+            if let textField = view as? UITextField {
+                print(textField.placeholder! + " : " + textField.text!)
+            }
+        }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool
+    {
+        // Try to find next responder
+        if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
+            nextField.becomeFirstResponder()
+        } else {
+            // Not found, so remove keyboard.
+            textField.resignFirstResponder()
+            submitForm()
+        }
+        // Do not add a line break
+        return false
+    }
 }
 
