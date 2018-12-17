@@ -1,9 +1,7 @@
-# Login Page
+# Register Page
 
-Tiens Emir, tkt 22 c'est pas mal comme note
+Petite page swift sans utiliser le storyboard
 
-Et je t'épargne ton temps, voici un screen :
+Small swift page without using the storyboard
 
 <img src="https://i.spau.lt/screen.png" width="250">
-
-Voila bisous
